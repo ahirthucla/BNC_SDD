@@ -14,7 +14,7 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-public class CompileClassifier 
+public class CompileClassifier
 {
   CompileClassifierConfig config;
   BayesianNetworkClassifier bnc;
@@ -42,36 +42,47 @@ public class CompileClassifier
     this.output_filename = getOutputFilename(config);
     this.documentation_filename = getDocumentationFilename(config);
 
-    BayesianNetwork bn = null;
-    String input_filename = this.config.getInput_filepath() + this.config.getName() + "." + this.config.getFiletype();
-    try {
-      switch (this.config.getFiletype()) {
-        case "net":
-          bn = IO.readNetwork(input_filename);
-          break;
-        case "uai":
-          bn = Uai.uaiToBayesianNetwork(input_filename);
-          break;
-        default:
-          bn = null;
-      }
-      if (bn == null) {
-        throw new Exception("File type is unsupported: " + this.config.getFiletype());
-      }
-    } catch (Exception e) {
-      System.out.println(e);
-    }
 
-    File output_filepath = new File(this.config.getOutput_filepath());
-    output_filepath.mkdirs();
+    //The following work is now being done in the CompileClassifierConfig constructor
+    //----start section----
 
-    this.bnc = new BayesianNetworkClassifier(
-      bn,
-      config.getRoot(),
-      config.getLeaves(),
-      Double.parseDouble(config.getThreshold())
-    );
-    this.bnc_compilation_order = new BayesianNetworkClassifierCompilationOrder(bnc);
+    //BayesianNetwork bn = null;
+    //String input_filename = this.config.getInput_filepath() + this.config.getName() + "." + this.config.getFiletype();
+    //try {
+    //  switch (this.config.getFiletype()) {
+    //    case "net":
+    //      bn = IO.readNetwork(input_filename);
+    //      break;
+    //    case "uai":
+    //      bn = Uai.uaiToBayesianNetwork(input_filename);
+    //      break;
+    //    default:
+    //      bn = null;
+    //  }
+    //  if (bn == null) {
+    //    throw new Exception("File type is unsupported: " + this.config.getFiletype());
+    //  }
+    //} catch (Exception e) {
+    //  System.out.println(e);
+    //}
+
+    //File output_filepath = new File(this.config.getOutput_filepath());
+    //output_filepath.mkdirs();
+
+    //this.bnc = new BayesianNetworkClassifier(
+    //  bn,
+    //  config.getRoot(),
+    //  config.getLeaves(),
+    //  Double.parseDouble(config.getThreshold())
+    //);
+    //this.bnc_compilation_order = new BayesianNetworkClassifierCompilationOrder(bnc);
+
+    //----end section----
+    //in order to remove the potential duplication of work,
+    //everything within the previous section has been replaced with the follwing two lines, which pull from the config
+
+    this.bnc = config.getBnc();
+    this.bnc_compilation_order = config.getBncOrder();
   }
 
   public void run(boolean logging) {

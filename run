@@ -11,8 +11,40 @@ CONFIG_FILE="config.json"
 mkdir -p ${OUT_DIR}
 make
 
+#Example running RunCompiler with config_file
 ${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} RunCompiler ${CONFIG_FILE}
+
+#Example running RunCompiler with 4-argument network_file, id, root, threshold
+${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} RunCompiler "networks/binarynetworks/admission.net" 1 Admit 0.5
+
+#Example running RunCompiler with 1-argument network_file
+${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} RunCompiler "networks/binarynetworks/admission.net"
+
+#Example running unmodified TestOdd
 ${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} TestOdd ${CONFIG_FILE}
+
+#Example generating all configs in a directory
+#for filename in networks/*; do
+#  ${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} ConfigGenerator $filename
+#done
+
+#Example generating all configs in a different directory
+#for filename in networks/binarynetworks/*; do
+#  ${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} ConfigGenerator $filename
+#done
+
+#Example running RunCompiler (and/or) TestOdd on the generated config files
+#for filename in output/*.json; do
+#  ${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} RunCompiler $filename
+#  ${JAVA} -Xmx150g -cp ${CP}:${OUT_DIR} TestOdd $filename
+#done
+
+#Example running Python convert_to_sdd on generated config files
+#for config in output/*.json; do
+#  cd src/sdd/
+#  python convert_to_sdd.py ../../$config
+#  cd ../../
+#done
 
 cd src/sdd/
 python convert_to_sdd.py ../../${CONFIG_FILE}

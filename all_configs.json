@@ -64,5 +64,5 @@
     "threshold": 0.55,
     "input_filepath": "networks/",
     "output_filepath": "output/"
-  },
+  }
 ]
